@@ -18,6 +18,8 @@ export default function Form(props) {
 
   const onChange = event => setName(event.target.value);
   
+  const save = () => props.onSave(name,interviewer);
+
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -38,13 +40,12 @@ export default function Form(props) {
           interviewers={props.interviewers}
           value={interviewer}
           onChange={setInterviewer}
-          onClick={() => console.log(props.interviewers)}
         />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel} >Cancel</Button>
-          <Button confirm onClick={props.onSave} >Save</Button>
+          <Button confirm onClick={save} >Save</Button>
         </section>
       </section>
     </main>
