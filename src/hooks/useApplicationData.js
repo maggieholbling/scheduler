@@ -1,50 +1,11 @@
 import { useReducer, useEffect } from "react";
 import axios from "axios";
-import {getAppointmentsForDay} from "helpers/selectors";
+
+import reducer, { SET_DAY, SET_DAYS, SET_APPLICATION_DATA, SET_INTERVIEW} from "reducers/application";
+
 
 export default function useApplicationData() {
-  //constants
-  const SET_DAY = "SET_DAY";
-  const SET_DAYS = "SET_DAYS";
-  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-  const SET_INTERVIEW = "SET_INTERVIEW";
-
-  //object lookup
-  const reducers = {
-    [SET_DAY](state, action) {
-      return { ...state, day: action.value };
-    },
-
-    [SET_DAYS](state) {
-
-      const days = state.days.map(day => {
-
-        const spots = 5 - getAppointmentsForDay(state, day.name).reduce((accumulator, currentValue) => {
-          return Number(currentValue.interview !== null) + accumulator;
-        }, 0);
-
-        const newObj = {...day, spots};
-        return newObj;
-
-      });
-
-      return { ...state, days};
-    },
-
-    [SET_APPLICATION_DATA](state, action) {
-      return { ...state, days:action.results[0].data, appointments:action.results[1].data, interviewers:action.results[2].data};
-    },
-
-    [SET_INTERVIEW](state, action) {
-      return {...state, appointments:{...state.appointments, [action.id]: {...state.appointments[action.id], interview: action.interview}}};
-    }
-  };
-
-  //reducer
-  const reducer = (state, action) => {
-    return reducers[action.type](state, action) || state;
-  };
-
+    
   //setting initial value of state
   const [state, dispatchState] = useReducer(reducer, {
     day: "Monday",
@@ -90,7 +51,6 @@ export default function useApplicationData() {
         //updating spots
         dispatchState({type: SET_DAYS});
       })
-      .catch((error) => console.log(error));
   }, []);
 
   return {state, setDay, bookInterview, cancelInterview};
