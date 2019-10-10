@@ -25,7 +25,8 @@ export default function useApplicationData() {
         dispatchState({type: SET_INTERVIEW, id, interview});
         //updating spots
         dispatchState({type: SET_DAYS});
-      });
+      })
+      .catch((error) => {throw error});
   };
 
   const cancelInterview = (id) => {
@@ -35,7 +36,8 @@ export default function useApplicationData() {
         dispatchState({type: SET_INTERVIEW, id, interview: null});
         //updating spots
         dispatchState({type: SET_DAYS});
-      });
+      })
+      .catch((error) => {throw error});
   };
 
   //getting API data
@@ -51,6 +53,7 @@ export default function useApplicationData() {
         //updating spots
         dispatchState({type: SET_DAYS});
       })
+      .catch((error) => {throw error});
   }, []);
 
   return {state, setDay, bookInterview, cancelInterview};

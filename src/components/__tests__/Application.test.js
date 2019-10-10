@@ -1,6 +1,4 @@
 import React from "react";
-
-import { prettyDOM } from "@testing-library/react";
 import axios from "axios";
 
 import { render, cleanup } from "@testing-library/react";
@@ -49,31 +47,23 @@ describe("Application", () => {
   });
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async() => {
-    // 1. Render the Application.
     const { container } = render(<Application />);
   
-    // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
     const appointment = getAllByTestId(container, "appointment").find(appointment =>
       queryByText(appointment, "Archie Cohen")
     );
 
-    // 3. Click the "Delete" button on the first full appointment.
     fireEvent.click(getByAltText(appointment, "Delete"));
     
-    // 2. Check that the element with the text "Are you sure?" is displayed.
     expect(getByText(appointment, "Are you sure?")).toBeInTheDocument();
 
-    // 6. Click the "Delete!" button in the confirmation window.
     fireEvent.click(getByText(appointment, "Delete!"));
 
-    // 7. Check that the element with the text "Deleting..." is displayed.
     expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
 
-    // 8. Wait until the element with the text "Add" is displayed.
     await waitForElement(() => getByAltText(appointment, "Add"));
 
-    // 9. Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
     const day = getAllByTestId(container, "day").find(day =>
       queryByText(day, "Monday")
     );
@@ -81,36 +71,28 @@ describe("Application", () => {
   });
 
   it("loads data, edits an interview and keeps the spots remaining for Monday the same", async() => {
-    // 1. Render the Application.
+
     const { container } = render(<Application />);
   
-    // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
     const appointment = getAllByTestId(container, "appointment").find(appointment =>
       queryByText(appointment, "Archie Cohen")
     );
 
-    // 3. Click the "Edit" button on the first full appointment.
     fireEvent.click(getByAltText(appointment, "Edit"));
     
-    // 4. Change the value for the name to be "The Doctor".
     fireEvent.change(getByDisplayValue(appointment, "Archie Cohen"), {
       target: { value: "The Doctor" }
     });
 
-    // 5. Change the interviewer to be "Sylvia Palmer".
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
-    // 6. Click the "Save" button on the same appointment.
     fireEvent.click(getByText(appointment, "Save"));
 
-    // 7. Check that the element with the text "Saving..." is displayed.
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
 
-    // 8. Wait until the element with the text "The Doctor" is displayed.
     await waitForElement(() => getByText(appointment, "The Doctor"));
 
-    // 9. Check that the DayListItem with the text "Monday" also has the text "1 spot remaining".
     const day = getAllByTestId(container, "day").find(day =>
       queryByText(day, "Monday")
     );

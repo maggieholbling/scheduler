@@ -1,4 +1,6 @@
 # Interview Scheduler
+Interview Scheduler is a Full Stack Web App built in ReactJS with Storybook, Cypress, and Jest. Users can create, edit, and cancel an appointment, the number of available appointments for each day automatically updates.
+
 
 ## Setup
 
